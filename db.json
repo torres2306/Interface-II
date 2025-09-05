@@ -1,0 +1,52 @@
+{
+  "books": [
+    {
+      "title": "Ejemplo libro",
+      "author": "Autor Demo",
+      "category": "Romance",
+      "date": "2024-09-04",
+      "image": {},
+      "img": "blob:http://localhost:5174/9cee3782-550f-4019-8f1b-3a828b8678aa",
+      "id": "1"
+    },
+    {
+      "title": "Diosa Humana",
+      "author": "Cristian",
+      "category": "Poesia",
+      "date": "2024-09-04",
+      "image": null,
+      "img": "blob:http://localhost:5174/056b88cb-a7b5-4f06-9f69-61c2a934170a",
+      "id": "60cb"
+    },
+    {
+      "id": "b0d0",
+      "title": "Brisas de Otoño",
+      "author": "Camilo",
+      "category": "Cronica",
+      "date": "2024-09-05",
+      "image": {},
+      "img": "blob:http://localhost:5174/63e54ad9-7960-46f1-9a3b-c29434378d97",
+      "desc": "Libro añadido por el usuario."
+    },
+    {
+      "id": "ce0f",
+      "title": "Mundo Hueco",
+      "author": "Aizen",
+      "category": "Ficción",
+      "date": "2025-04-22",
+      "image": {},
+      "img": "blob:http://localhost:5174/719f71dc-e987-4810-9cc8-1b543a4f9bac",
+      "desc": "Libro añadido por el usuario."
+    },
+    {
+      "id": "b4b3",
+      "title": "Un heroe en la sombra",
+      "author": "Itachi",
+      "category": "Cronica",
+      "date": "2001-07-03",
+      "image": {},
+      "img": "blob:http://localhost:5174/f488be21-cd6a-4e53-b959-c6fdf5430175",
+      "desc": "Libro añadido por el usuario."
+    }
+  ]
+}

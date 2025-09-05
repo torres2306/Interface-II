@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import formulario from "../../assets/formulario.jpg";
 
-function Formulario() {
+function Formulario({ onAddBook, onEditBook, editingBook, onCancelEdit }) {
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -9,6 +9,19 @@ function Formulario() {
     date: "",
     image: null,
   });
+
+  //  Cuando editingBook cambia, cargamos sus datos en el formulario
+  useEffect(() => {
+    if (editingBook) {
+      setFormData({
+        title: editingBook.title,
+        author: editingBook.author,
+        category: editingBook.category,
+        date: editingBook.date,
+        image: null, // no cargamos la imagen original
+      });
+    }
+  }, [editingBook]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -21,22 +34,38 @@ function Formulario() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData);
-    alert("Libro agregado correctamente 📚");
+
+    if (editingBook) {
+      // Editamos libro existente
+      onEditBook(editingBook.id, formData);
+      alert("Libro editado correctamente ✏️");
+    } else {
+      // Agregamos nuevo libro
+      onAddBook(formData);
+      alert("Libro agregado correctamente 📚");
+    }
+
+    // Limpiar formulario
+    setFormData({
+      title: "",
+      author: "",
+      category: "",
+      date: "",
+      image: null,
+    });
   };
 
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center px-6"
-      style={{ backgroundImage: `url(${formulario})` }} // Pon tu imagen en /public
+      style={{ backgroundImage: `url(${formulario})` }}
     >
       <form
         onSubmit={handleSubmit}
         className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-8 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6"
       >
-        {/* Encabezado */}
         <h2 className="col-span-2 text-3xl font-bold text-white mb-4">
-          Agregar Libro
+          {editingBook ? "Editar Libro" : "Agregar Libro"}
         </h2>
 
         {/* Campos */}
@@ -87,11 +116,9 @@ function Formulario() {
           />
         </div>
 
-        {/* Subida de imagen */}
+        {/* Imagen */}
         <div className="col-span-2">
-          <label className="block text-white mb-2">
-            Imagen del libro
-          </label>
+          <label className="block text-white mb-2">Imagen del libro</label>
           <div className="w-full border-2 border-dashed border-white/70 rounded-xl p-6 text-center bg-white/10">
             <input
               type="file"
@@ -117,20 +144,20 @@ function Formulario() {
 
         {/* Botones */}
         <div className="col-span-2 flex justify-end gap-4 mt-4">
-          <button
-            type="button"
-            onClick={() =>
-              setFormData({ title: "", author: "", category: "", date: "", image: null })
-            }
-            className="px-6 py-2 rounded-full bg-[#dccfc0] text-[#778272] hover:bg-[#d0c4b6] transition"
-          >
-            Cancelar
-          </button>
+          {editingBook && (
+            <button
+              type="button"
+              onClick={onCancelEdit}
+              className="px-6 py-2 rounded-full bg-red-400 text-white hover:bg-red-500 transition"
+            >
+              Cancelar edición
+            </button>
+          )}
           <button
             type="submit"
             className="px-6 py-2 rounded-full  border border-[#dccfc0] text-[#dccfc0] hover:bg-[#dccfc0] hover:text-[#778272] transition"
           >
-            Guardar
+            {editingBook ? "Actualizar" : "Guardar"}
           </button>
         </div>
       </form>

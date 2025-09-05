@@ -1,75 +1,88 @@
+import { useState, useEffect } from "react";
 import home from "../../assets/home.jpg";
 import Formulario from "../formulario/formulario";
+import ModalLibro from "./ModalLibro"; //importa el modal
 
 function Home() {
-  const books = [
-    {
-      id: 1,
-      title: "Título",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-      img: "https://via.placeholder.com/150x200",
-    },
-    {
-      id: 2,
-      title: "Título",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-      img: "https://via.placeholder.com/150x200",
-    },
-    {
-      id: 3,
-      title: "Título",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-      img: "https://via.placeholder.com/150x200",
-    },
-    {
-      id: 4,
-      title: "Título",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-      img: "https://via.placeholder.com/150x200",
-    },
-    {
-      id: 5,
-      title: "Título",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-      img: "https://via.placeholder.com/150x200",
-    },
-    {
-      id: 6,
-      title: "Título",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.",
-      img: "https://via.placeholder.com/150x200",
-    },
-  ];
+  const [books, setBooks] = useState([]);
+  const [editingBook, setEditingBook] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null); // 👈 para el modal
+
+  // 👉 Cargar libros desde la API
+  useEffect(() => {
+    fetch("http://localhost:4000/books")
+      .then((res) => res.json())
+      .then((data) => setBooks(data))
+      .catch((err) => console.error("Error cargando libros:", err));
+  }, []);
+
+  // Agregar libro
+  const handleAddBook = async (newBook) => {
+    const bookWithId = {
+      ...newBook,
+      img: newBook.image
+        ? URL.createObjectURL(newBook.image)
+        : "https://via.placeholder.com/150x200",
+      desc: "Libro añadido por el usuario.",
+    };
+
+    try {
+      const res = await fetch("http://localhost:4000/books", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookWithId),
+      });
+      const savedBook = await res.json();
+      setBooks([savedBook, ...books]);
+    } catch (error) {
+      console.error("Error agregando libro:", error);
+    }
+  };
+
+  // Editar libro
+  const handleEditBook = async (id, updatedBook) => {
+    const bookToUpdate = {
+      ...updatedBook,
+      img: updatedBook.image
+        ? URL.createObjectURL(updatedBook.image)
+        : books.find((b) => b.id === id).img,
+    };
+
+    try {
+      await fetch(`http://localhost:4000/books/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookToUpdate),
+      });
+
+      setBooks((prevBooks) =>
+        prevBooks.map((book) => (book.id === id ? { id, ...bookToUpdate } : book))
+      );
+      setEditingBook(null);
+    } catch (error) {
+      console.error("Error editando libro:", error);
+    }
+  };
+
+  // Eliminar libro
+  const handleDeleteBook = async (id) => {
+    if (!confirm("¿Seguro que quieres eliminar este libro? 📕❌")) return;
+
+    try {
+      await fetch(`http://localhost:4000/books/${id}`, {
+        method: "DELETE",
+      });
+      setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
+    } catch (error) {
+      console.error("Error eliminando libro:", error);
+    }
+  };
+
   return (
     <>
-      <div
-        className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center"
-        style={{ backgroundImage: `url(${home})` }}
-      >
-        <h1 className="text-[109px] font-[Parisienne] mb-4 text-[#faf9ee] drop-shadow-lg">
-          Cada página es una puerta
-        </h1>
-        <p className="text-[66.3px] text-center font-[libertinus] max-w-xl text-[#faf9ee] drop-shadow-md">
-          a un nuevo universo.
-        </p>
-      </div>
+      {/* Lista de libros */}
       <section className="bg-[#faf9ee] py-16 px-6">
         <div className="max-w-6xl mx-auto">
-          {/* Encabezado */}
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-[50px] font-[Parisienne] text-[#778272] underline">
-              Libros
-            </h2>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Buscar..."
-                className="px-4 py-2 border border-[#778272] rounded-full focus:outline-none focus:ring-2 focus:ring-[#778272]"
-              />
-              <span className="absolute right-4 top-2 text-gray-500">🔍</span>
-            </div>
-          </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {books.map((book) => (
               <div
@@ -84,16 +97,43 @@ function Home() {
                 <h3 className="text-lg font-bold text-[#333] mb-2">
                   {book.title}
                 </h3>
-                <p className="text-sm text-gray-600 flex-1">{book.desc}</p>
-                <button className="mt-4 self-start px-4 py-1 rounded-full bg-[#778272] text-white hover:bg-[#5e6659] transition">
-                  Ver
-                </button>
+
+                <div className="flex gap-2 mt-4">
+                  <button
+                    onClick={() => setEditingBook(book)}
+                    className="px-4 py-1 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleDeleteBook(book.id)}
+                    className="px-4 py-1 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    onClick={() => setSelectedBook(book)} // 👈 abre modal
+                    className="px-4 py-1 rounded-full bg-[#778272] text-white hover:bg-[#5e6659] transition"
+                  >
+                    Ver
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-      <Formulario />
+
+      {/* Formulario con soporte para edición */}
+      <Formulario
+        onAddBook={handleAddBook}
+        onEditBook={handleEditBook}
+        editingBook={editingBook}
+        onCancelEdit={() => setEditingBook(null)}
+      />
+
+      {/* Modal para ver detalles */}
+      <ModalLibro book={selectedBook} onClose={() => setSelectedBook(null)} />
     </>
   );
 }
