@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import home from "../../assets/home.jpg";
 import Formulario from "../formulario/formulario";
 import ModalLibro from "./ModalLibro"; //importa el modal
 
