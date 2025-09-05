@@ -1,51 +1,58 @@
 {
   "books": [
     {
-      "title": "Ejemplo libro",
-      "author": "Autor Demo",
-      "category": "Romance",
-      "date": "2024-09-04",
-      "image": {},
-      "img": "blob:http://localhost:5174/9cee3782-550f-4019-8f1b-3a828b8678aa",
+      "title": "Asylum",
+      "author": "Madeleine Roux",
+      "category": "Terror psicológico/Paranormal",
+      "date": "2014-08-26",
+      "image": null,
+      "img": "blob:http://localhost:5173/4048ae30-c3e6-48b8-8c7c-a1e55606eacc",
       "id": "1"
     },
     {
-      "title": "Diosa Humana",
-      "author": "Cristian",
-      "category": "Poesia",
-      "date": "2024-09-04",
-      "image": null,
-      "img": "blob:http://localhost:5174/056b88cb-a7b5-4f06-9f69-61c2a934170a",
+      "title": "Psicología Oscura",
+      "author": "Steven Turner",
+      "category": "Autoayuda/Psicología",
+      "date": "2019-11-26",
+      "image": {},
+      "img": "blob:http://localhost:5173/0267c955-676a-4142-aedf-6014d40756ef",
       "id": "60cb"
     },
     {
-      "id": "b0d0",
       "title": "Brisas de Otoño",
       "author": "Camilo",
       "category": "Cronica",
       "date": "2024-09-05",
       "image": {},
-      "img": "blob:http://localhost:5174/63e54ad9-7960-46f1-9a3b-c29434378d97",
-      "desc": "Libro añadido por el usuario."
+      "img": "blob:http://localhost:5173/66b5ba6e-c968-4fea-9e38-7cd33fb2ef97",
+      "id": "b0d0"
     },
     {
-      "id": "ce0f",
-      "title": "Mundo Hueco",
+      "title": "Atlantis",
       "author": "Aizen",
       "category": "Ficción",
       "date": "2025-04-22",
       "image": {},
-      "img": "blob:http://localhost:5174/719f71dc-e987-4810-9cc8-1b543a4f9bac",
-      "desc": "Libro añadido por el usuario."
+      "img": "blob:http://localhost:5173/5fda37e4-1b28-4a06-9d21-a684efd4caf4",
+      "id": "ce0f"
     },
     {
-      "id": "b4b3",
-      "title": "Un heroe en la sombra",
+      "title": "El camino de las sombras",
       "author": "Itachi",
       "category": "Cronica",
       "date": "2001-07-03",
       "image": {},
-      "img": "blob:http://localhost:5174/f488be21-cd6a-4e53-b959-c6fdf5430175",
+      "img": "blob:http://localhost:5173/68e9e723-8b53-4c00-b09a-6e8c0f162dc2",
+      "id": "b4b3"
+    },
+    {
+      "id": "db3e",
+      "title": "Bajo la misma estrella",
+      "author": "Itachi",
+      "category": "Cronica",
+      "date": "2001-07-03",
+      "image": {},
+      "img": "blob:http://localhost:5173/03866912-48c0-4168-8aff-98b2cb9dfb8d",
       "desc": "Libro añadido por el usuario."
     }
   ]
